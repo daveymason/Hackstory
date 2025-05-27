@@ -5,7 +5,7 @@ This document lists all the HTML elements and classes that can be used with Fath
 ## Layout Components
 - `.fh-ui-container` - Main container component
 - `.fh-ui-grid` - Grid layout system
-- `.fh-ui-header` - Page header component
+- `.fh-ui-header` - Page header component 
 - `.fh-ui-footer` - Footer component
 - `.fh-ui-snap-container` - Container for scroll snap functionality
 - `.fh-ui-snap-section` - Section with scroll snap functionality

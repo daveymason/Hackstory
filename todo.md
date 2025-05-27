@@ -1,3 +1,5 @@
-Clicking on each card will spin the card and it shows a picture. Use placeholders for now.
-Utilise the animations in the CSS a little more. 
-Fix the scroll to bottom prompt, righ tnow its in the card it should be under the card hovering over the bottom of the section. not the card. 
+Make the whole card swing and show the image. 
+Add real iamges of teh event, AI generate if needed. 
+Maybe create a separate script file. 
+Add the custom CSS elements into fathead-ui. Like the timeline and card swapping. 
+Improve the UI and UX of the cards. Have locations use the flags and have more space. etc
