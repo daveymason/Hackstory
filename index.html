@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anton de Kom: A Life of Resistance</title>
+    <link rel="stylesheet" href="fathead-ui.css">    <style>
+        /* Surinamese color theme */
+        :root {
+            --suriname-red: #ce1126;
+            --suriname-white: #ffffff;
+            --suriname-blue: #003082;
+            --suriname-green: #00a86b;
+            --suriname-gold: #ffd700;
+            --suriname-dark-green: #006b3c;
+        }
+        
+        /* Additional styles for the story */
+        .story-snap-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+          .story-section {
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: var(--fh-lg);
+            position: relative;
+            box-sizing: border-box;
+        }
+          .hero-section {
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(206, 17, 38, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 168, 107, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 48, 130, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, 
+                    rgba(206, 17, 38, 0.1) 0%, 
+                    rgba(255, 215, 0, 0.05) 25%,
+                    rgba(0, 168, 107, 0.08) 50%,
+                    rgba(0, 48, 130, 0.12) 75%,
+                    rgba(206, 17, 38, 0.05) 100%);
+            border-bottom: 3px solid var(--suriname-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.03) 50%, transparent 70%),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(206, 17, 38, 0.02) 50px,
+                    rgba(206, 17, 38, 0.02) 52px
+                );
+            pointer-events: none;
+        }
+        
+        .hero-section .fh-ui-container {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .timeline-section {
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(206, 17, 38, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 168, 107, 0.06) 0%, transparent 40%),
+                var(--fh-glass-bg);
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            backdrop-filter: blur(var(--fh-glass-blur));
+            position: relative;
+        }
+        
+        .timeline-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, 
+                    transparent 20%, 
+                    rgba(0, 48, 130, 0.02) 50%, 
+                    transparent 80%);
+            pointer-events: none;
+        }
+          .timeline-year {
+            font-size: var(--fh-md);
+            color: var(--suriname-red);
+            font-weight: 600;
+            margin-bottom: var(--fh-xs);
+        }        .timeline-location {
+            font-size: var(--fh-sm);
+            color: var(--suriname-blue);
+            font-weight: 600;
+            margin-bottom: var(--fh-md);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 48, 130, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: inline-block;
+            text-shadow: none;
+            box-shadow: 0 2px 8px rgba(0, 48, 130, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-location:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 48, 130, 0.25);
+        }
+          .timeline-content {
+            max-width: 700px;
+            font-size: var(--fh-md);
+            line-height: 1.5;
+            color: var(--fh-text-secondary);
+            margin: 0 auto;
+            padding: 0 var(--fh-md);
+        }
+        
+        .timeline-content p {
+            margin: 0;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        
+        /* Card flip functionality */
+        .timeline-card {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: auto;
+            min-height: 200px;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        
+        .timeline-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: relative;
+            width: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: var(--fh-lg);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+        
+        .card-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--suriname-red), var(--suriname-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin-bottom: var(--fh-md);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-caption {
+            font-size: var(--fh-sm);
+            color: var(--suriname-blue);
+            font-weight: 500;
+            text-align: center;
+        }
+          .scroll-indicator {
+            position: absolute;
+            bottom: var(--fh-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--fh-text-tertiary);
+            font-size: var(--fh-xs);
+            animation: bounce 2s infinite;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.5);
+            padding: var(--fh-xs) var(--fh-sm);
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+        }
+        
+        .scroll-indicator i {
+            display: block;
+            font-size: var(--fh-md);
+            margin-top: var(--fh-xs);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+          .section-number {
+            position: absolute;
+            top: var(--fh-md);
+            right: var(--fh-md);
+            font-size: var(--fh-xs);
+            color: var(--fh-text-tertiary);
+            font-weight: 300;
+        }
+        
+        /* Ensure content fits within viewport */
+        .fh-ui-container {
+            max-height: calc(100vh - 4rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .fh-ui-section-title {
+            font-size: var(--fh-lg);
+            margin-bottom: var(--fh-sm);
+        }
+          .fh-ui-main-title {
+            font-size: var(--fh-xl);
+            margin-bottom: var(--fh-sm);
+            color: var(--suriname-red);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+        
+        .fh-ui-subtitle {
+            font-size: var(--fh-lg);
+            margin-bottom: var(--fh-lg);
+            color: var(--suriname-blue);
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+          .hero-section .timeline-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            padding: var(--fh-lg);
+            margin-top: var(--fh-md);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-section .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero-section .timeline-content p {
+            color: var(--fh-text-primary);
+            font-weight: 400;
+            font-size: var(--fh-md);
+        }
+        
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            .story-snap-container {
+                scroll-behavior: auto;
+            }
+            
+            .scroll-indicator {
+                animation: none;
+            }
+        }
+          /* Skip navigation for accessibility */
+        .skip-nav {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--suriname-red);
+            color: var(--suriname-white);
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 1000;
+        }
+        
+        .skip-nav:focus {
+            top: 6px;
+        }
+          /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .timeline-section {
+                background: rgba(0, 0, 0, 0.9);
+                border: 2px solid white;
+            }
+            
+            .timeline-content {
+                color: white;
+            }
+        }
+        
+        /* Surinamese themed sections */
+        .story-section:nth-child(even) .timeline-section {
+            border-bottom: 1px solid rgba(206, 17, 38, 0.2);
+        }
+        
+        .story-section:nth-child(odd) .timeline-section {
+            border-bottom: 1px solid rgba(0, 168, 107, 0.2);
+        }
+        
+        /* Special styling for key sections */
+        .story-section:nth-child(4) .timeline-year, /* Return to Suriname */
+        .story-section:nth-child(6) .timeline-year { /* The People's Counselor */
+            color: var(--suriname-green);
+        }
+        
+        .story-section:nth-child(8) .timeline-year, /* Resistance writing */
+        .story-section:nth-child(9) .timeline-year, /* Fighter in Shadows */
+        .story-section:nth-child(10) .timeline-year { /* Last Silence */
+            color: var(--suriname-blue);
+        }
+        
+        .story-section:nth-child(11) .timeline-year { /* Legacy */
+            color: var(--suriname-gold);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .story-section {
+                padding: var(--fh-md);
+            }
+            
+            .timeline-content {
+                font-size: var(--fh-sm);
+                max-width: 100%;
+                padding: 0 var(--fh-sm);
+            }
+            
+            .section-number {
+                top: var(--fh-sm);
+                right: var(--fh-sm);
+                font-size: var(--fh-xs);
+            }
+            
+            .fh-ui-main-title {
+                font-size: var(--fh-lg);
+            }
+            
+            .fh-ui-subtitle {
+                font-size: var(--fh-md);
+            }
+            
+            .fh-ui-section-title {
+                font-size: var(--fh-md);
+            }
+            
+            .timeline-year {
+                font-size: var(--fh-sm);
+            }
+            
+            .timeline-location {
+                font-size: var(--fh-xs);
+            }
+            
+            .card-image {
+                width: 120px;
+                height: 120px;
+                font-size: 2.5rem;
+            }
+            
+            .card-caption {
+                font-size: var(--fh-xs);
+            }
+        }
+          /* Very small screens */
+        @media (max-width: 480px) {
+            .story-section {
+                padding: var(--fh-sm);
+            }
+            
+            .timeline-content {
+                font-size: var(--fh-xs);
+                line-height: 1.4;
+            }
+            
+            .fh-ui-container {
+                max-height: calc(100vh - 2rem);
+            }
+            
+            .card-image {
+                width: 100px;
+                height: 100px;
+                font-size: 2rem;
+            }
+            
+            .card-front, .card-back {
+                padding: var(--fh-md);
+                min-height: 150px;
+            }
+        }
+    </style>
+</head>
+<body class="fh-ui">
+    <!-- Background elements -->
+    <div class="fh-ui-bg"></div>
+    <div class="fh-ui-grid"></div>
+    
+    <!-- Skip navigation for accessibility -->
+    <a href="#main-content" class="skip-nav">Skip to main content</a>
+    
+    <!-- Main story container -->
+    <main id="main-content" class="story-snap-container" role="main">
+          <!-- Hero Section -->
+        <section class="story-section hero-section" aria-label="Introduction to Anton de Kom">
+            <div class="fh-ui-container">
+                <h1 class="fh-ui-main-title">Anton de Kom</h1>
+                <p class="fh-ui-subtitle">A Life of Resistance</p>
+                <div class="timeline-content">
+                    <p>He was a Surinamese author, an anti-colonial activist, and a Dutch resistance hero. From the shores of his homeland to the streets of The Hague, Anton de Kom waged a lifelong war against injustice with his most powerful weapon: the truth. His story, once silenced, now defines the conscience of a nation.</p>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to continue">
+                Scroll to uncover his story
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 1: Roots in Suriname -->
+        <section class="story-section timeline-section" aria-label="Anton de Kom's early life in Suriname">
+            <div class="section-number">01/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">Roots in Suriname</h2>
+                <div class="timeline-year">1898</div>
+                <div class="timeline-location">Paramaribo, Suriname</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>Born into a society still bearing the deep scars of slavery, Anton de Kom grew up hearing the oral histories of his enslaved ancestors. This foundation ignited a lifelong quest for the dignity and recognition of his people.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">👶</div>
+                            <div class="card-caption">Young Anton de Kom in Paramaribo, surrounded by the stories of his ancestors</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>        <!-- Timeline Section 2: A New Chapter in Holland -->
+        <section class="story-section timeline-section" aria-label="Anton de Kom moves to the Netherlands">
+            <div class="section-number">02/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">A New Chapter in Holland</h2>
+                <div class="timeline-year">1921</div>
+                <div class="timeline-location">The Hague, Netherlands</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>At age 23, De Kom moves to the Netherlands, where he works as an accountant, falls in love with Petronella Borsboom, and starts a family. Here, he confronts the subtle racism of European society and becomes involved with anti-colonial movements, including support for Indonesian independence.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">🏢</div>
+                            <div class="card-caption">Anton working as an accountant in The Hague, beginning his new life in Europe</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 3: Return of a Son -->
+        <section class="story-section timeline-section" aria-label="Anton de Kom returns to Suriname">
+            <div class="section-number">03/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">Return of a Son</h2>
+                <div class="timeline-year">1932</div>
+                <div class="timeline-location">Paramaribo, Suriname</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>After eleven years in the Netherlands, De Kom returns to Suriname with his Dutch wife and children. The people welcome him as a hero, but colonial authorities immediately view him as a dangerous agitator and place him under constant surveillance.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">🚢</div>
+                            <div class="card-caption">De Kom's triumphant return to Suriname with his family, welcomed as a hero</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 4: The Book That Sparked a Fire -->
+        <section class="story-section timeline-section" aria-label="Publication of We Slaves of Suriname">
+            <div class="section-number">04/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">The Book That Sparked a Fire</h2>
+                <div class="timeline-year">1934</div>
+                <div class="timeline-location">Amsterdam, Netherlands</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>While in exile, he completes and publishes his masterwork, <em>Wij slaven van Suriname</em> (We Slaves of Suriname). This groundbreaking book is the first history of Suriname written from an Afro-Surinamese perspective, exposing the brutal realities of slavery and colonialism. It becomes an immediate sensation and establishes him as a major intellectual voice.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">📚</div>
+                            <div class="card-caption">The groundbreaking book "We Slaves of Suriname" - the first history from an Afro-Surinamese perspective</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 5: The People's Counselor & Arrest -->
+        <section class="story-section timeline-section" aria-label="Anton de Kom's arrest and Black Tuesday">
+            <div class="section-number">05/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">The People's Counselor & Arrest</h2>
+                <div class="timeline-year">1933</div>
+                <div class="timeline-location">Paramaribo, Suriname</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>He opens a consulting office to help Surinamese workers, who flock to him by the thousands. Fearing his influence, colonial authorities arrest him without charge. The mass protest demanding his release is met with gunfire, an event known as "Black Tuesday."</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">⚖️</div>
+                            <div class="card-caption">De Kom counseling workers in his office before his arrest on "Black Tuesday"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>        <!-- Timeline Section 6: Exile in The Hague -->
+        <section class="story-section timeline-section" aria-label="Anton de Kom's exile period">
+            <div class="section-number">06/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">Exile in The Hague</h2>
+                <div class="timeline-year">1933 - 1940</div>
+                <div class="timeline-location">The Hague, Netherlands</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>Banished from his homeland and sent back to the Netherlands, De Kom is jobless and under surveillance. He and his family endure poverty while living in the working-class neighborhoods of The Hague, but he never stops writing.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">🏠</div>
+                            <div class="card-caption">De Kom in exile, writing in his modest home in The Hague despite surveillance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 7: The Pen Against Fascism -->
+        <section class="story-section timeline-section" aria-label="Nazi occupation and resistance writing">
+            <div class="section-number">07/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">The Pen Against Fascism</h2>
+                <div class="timeline-year">1940</div>
+                <div class="timeline-location">The Hague, Netherlands</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>When the Nazis invade and occupy the Netherlands, De Kom immediately recognizes the face of his old enemy—oppression. He joins the communist-leaning journal <em>De Vonk</em> (The Spark), writing articles against the fascist occupation.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">✍️</div>
+                            <div class="card-caption">De Kom writing for "De Vonk" resistance journal during Nazi occupation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 8: A Fighter in the Shadows -->
+        <section class="story-section timeline-section" aria-label="Dutch Resistance activities">
+            <div class="section-number">08/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">A Fighter in the Shadows</h2>
+                <div class="timeline-year">1942 - 1944</div>
+                <div class="timeline-location">The Hague, Netherlands</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>His resistance work becomes more direct and dangerous. He joins the Dutch Resistance, forging documents for Jews in hiding and writing for the underground press. His home becomes a hub of clandestine activity.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">🕶️</div>
+                            <div class="card-caption">De Kom forging documents and coordinating resistance activities from his home</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 9: The Last Silence -->
+        <section class="story-section timeline-section" aria-label="Arrest and concentration camps">
+            <div class="section-number">09/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">The Last Silence</h2>
+                <div class="timeline-year">August 1944 - April 1945</div>
+                <div class="timeline-location">Germany</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>Betrayed and arrested by the Gestapo, De Kom is imprisoned at the Oranjehotel in Scheveningen before being deported. He passes through two concentration camps, Vught and eventually Neuengamme, where he is forced into hard labor.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">⛓️</div>
+                            <div class="card-caption">De Kom's final imprisonment in Nazi concentration camps</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator" aria-label="Scroll to next section">
+                <i>↓</i>
+            </div>
+        </section>
+
+        <!-- Timeline Section 10: Legacy and Vindication -->
+        <section class="story-section timeline-section" aria-label="Anton de Kom's death and posthumous recognition">
+            <div class="section-number">10/10</div>
+            <div class="fh-ui-container">
+                <h2 class="fh-ui-section-title">Legacy and Vindication</h2>
+                <div class="timeline-year">April 1945 & Beyond</div>
+                <div class="timeline-location">Germany & Netherlands</div>
+                <div class="timeline-card" onclick="flipCard(this)">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="timeline-content">
+                                <p>Anton de Kom dies of tuberculosis in a satellite camp of Neuengamme just weeks before its liberation. Decades later, his work is rediscovered. He is posthumously awarded the Dutch Cross of Resistance, and in 2020, his book becomes a central text during the Dutch Prime Minister's apology for slavery. His story is now a mandatory part of Dutch history.</p>
+                            </div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-image">🏆</div>
+                            <div class="card-caption">De Kom's posthumous recognition: awarded the Dutch Cross of Resistance, his legacy finally honored</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Navigation dots for accessibility and navigation -->
+    <nav class="fh-ui-snap-dots" aria-label="Story sections navigation">
+        <button class="dot active" aria-label="Go to introduction" onclick="scrollToSection(0)"></button>
+        <button class="dot" aria-label="Go to section 1" onclick="scrollToSection(1)"></button>
+        <button class="dot" aria-label="Go to section 2" onclick="scrollToSection(2)"></button>
+        <button class="dot" aria-label="Go to section 3" onclick="scrollToSection(3)"></button>
+        <button class="dot" aria-label="Go to section 4" onclick="scrollToSection(4)"></button>
+        <button class="dot" aria-label="Go to section 5" onclick="scrollToSection(5)"></button>
+        <button class="dot" aria-label="Go to section 6" onclick="scrollToSection(6)"></button>
+        <button class="dot" aria-label="Go to section 7" onclick="scrollToSection(7)"></button>
+        <button class="dot" aria-label="Go to section 8" onclick="scrollToSection(8)"></button>
+        <button class="dot" aria-label="Go to section 9" onclick="scrollToSection(9)"></button>
+        <button class="dot" aria-label="Go to section 10" onclick="scrollToSection(10)"></button>
+    </nav>    <script>
+        // Card flip functionality
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+        
+        // Scroll navigation and accessibility
+        function scrollToSection(index) {
+            const sections = document.querySelectorAll('.story-section');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (sections[index]) {
+                sections[index].scrollIntoView({ behavior: 'smooth' });
+                
+                // Update active dot
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[index].classList.add('active');
+            }
+        }
+
+        // Update active dot on scroll
+        let ticking = false;
+        
+        function updateActiveDot() {
+            const sections = document.querySelectorAll('.story-section');
+            const dots = document.querySelectorAll('.dot');
+            const scrollContainer = document.querySelector('.story-snap-container');
+            
+            let activeIndex = 0;
+            const scrollTop = scrollContainer.scrollTop;
+            const containerHeight = scrollContainer.clientHeight;
+            
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollTop >= sectionTop - containerHeight / 2 && 
+                    scrollTop < sectionTop + sectionHeight - containerHeight / 2) {
+                    activeIndex = index;
+                }
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeIndex);
+            });
+            
+            ticking = false;
+        }
+        
+        document.querySelector('.story-snap-container').addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateActiveDot);
+                ticking = true;
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const currentSection = document.querySelector('.dot.active');
+            const allDots = Array.from(document.querySelectorAll('.dot'));
+            const currentIndex = allDots.indexOf(currentSection);
+            
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                if (currentIndex < allDots.length - 1) {
+                    scrollToSection(currentIndex + 1);
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    scrollToSection(currentIndex - 1);
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                scrollToSection(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                scrollToSection(allDots.length - 1);
+            }
+        });
+
+        // Prefers-reduced-motion support
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.style.scrollBehavior = 'auto';
+        }
+    </script>
+</body>
+</html>
