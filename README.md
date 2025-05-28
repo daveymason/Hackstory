@@ -16,7 +16,7 @@ This minimalist snap-scroll digital experience guides you through 10 pivotal mom
 - **1934**: Publishes groundbreaking book "We Slaves of Suriname"
 - **1933**: Arrested and exiled after Black Tuesday uprising
 - **1940**: Writes resistance journalism during Nazi occupation
-- **1942-44**: Joins Dutch Resistance, forges documents for Jews
+- **1942-44**: Joins Dutch Resistance, forges documents for the Jewish people
 - **1944**: Betrayed and arrested by Gestapo
 - **1945**: Dies in concentration camp weeks before liberation
 - **Legacy**: Posthumously honored, his work now mandatory Dutch history

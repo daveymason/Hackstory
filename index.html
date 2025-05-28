@@ -262,8 +262,7 @@
             align-items: center;
             justify-content: center;
         }
-        
-        /* References section styles */
+          /* References section styles */
         .references-section {
             background: linear-gradient(135deg, 
                 rgba(0, 168, 107, 0.15) 0%,
@@ -271,7 +270,7 @@
                 rgba(206, 17, 38, 0.15) 100%);
             color: rgba(255, 255, 255, 0.95);
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-            padding: 40px 0;
+            padding: 40px 0 60px 0;
         }
 
         .references-content {
@@ -309,15 +308,34 @@
             font-size: 1.05em;
             margin-bottom: 8px;
             color: rgba(255, 255, 255, 0.95);
-        }
-
-        .reference-details {
+        }        .reference-details {
             font-size: 0.95em;
             color: rgba(255, 255, 255, 0.8);
             margin-bottom: 0;
         }
 
-        .project-attribution {
+        /* Reference links styling for better readability */
+        .reference-details a {
+            color: var(--suriname-gold);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .reference-details a:hover {
+            color: var(--suriname-white);
+            border-bottom-color: var(--suriname-white);
+            background: rgba(255, 215, 0, 0.1);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .reference-details a:focus {
+            outline: 2px solid var(--suriname-gold);
+            outline-offset: 2px;
+            border-radius: 3px;
+        }.project-attribution {
             text-align: center;
             margin-top: 40px;
             padding: 20px;
@@ -328,8 +346,13 @@
 
         .project-attribution p {
             margin: 0;
+            margin-bottom: 8px;
             font-size: 1.1em;
             color: rgba(255, 255, 255, 0.9);
+        }
+
+        .project-attribution p:last-child {
+            margin-bottom: 0;
         }
 
         .project-attribution strong {
@@ -337,24 +360,84 @@
             font-weight: 600;
         }
 
-        /* Reference links styling */
-        .reference-details a {
-            color: var(--suriname-gold);
+        /* Project attribution links styling */
+        .project-attribution a {
+            color: var(--suriname-white);
             text-decoration: none;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
             transition: all 0.3s ease;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
 
-        .reference-details a:hover {
-            color: rgba(255, 255, 255, 0.95);
-            border-bottom-color: rgba(255, 255, 255, 0.8);
+        .project-attribution a:hover {
+            color: var(--suriname-gold);
+            border-bottom-color: var(--suriname-gold);
+            background: rgba(255, 215, 0, 0.1);
             text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
-        .reference-details a:focus {
+        .project-attribution a:focus {
             outline: 2px solid var(--suriname-gold);
             outline-offset: 2px;
-            border-radius: 2px;
+            border-radius: 3px;
+        }
+
+        /* Ensure consistent card animations for all timeline cards */
+        .timeline-card {
+            perspective: 1200px !important;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-card:hover {
+            transform: scale(1.03);
+        }
+
+        .card-inner {
+            position: relative !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 280px !important;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+            transform-style: preserve-3d !important;
+        }
+
+        .timeline-card.flipped .card-inner {
+            transform: rotateY(180deg) !important;
+        }
+
+        .card-front, .card-back {
+            position: relative !important;
+            width: 100% !important;
+            backface-visibility: hidden !important;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            min-height: 280px;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        .card-back {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            transform: rotateY(180deg) !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.2) 0%, 
+                rgba(255, 215, 0, 0.1) 50%, 
+                rgba(255, 255, 255, 0.15) 100%);
         }
 
         /* Button styles for cards */
@@ -734,9 +817,7 @@
             <div class="scroll-indicator" aria-label="Scroll to next section">
                 <i>↓</i>
             </div>
-        </section>
-
-        <!-- Timeline Section 6: The Book That Sparked a Fire -->
+        </section>        <!-- Timeline Section 6: The Book That Sparked a Fire -->
         <section class="story-section timeline-section" aria-label="Publication of We Slaves of Suriname">
             <div class="section-number">06/10</div>
             <div class="fh-ui-container">
@@ -767,7 +848,7 @@
             <div class="scroll-indicator" aria-label="Scroll to next section">
                 <i>↓</i>
             </div>
-        </section>        <!-- Timeline Section 7: The Pen Against Fascism -->
+        </section><!-- Timeline Section 7: The Pen Against Fascism -->
         <section class="story-section timeline-section" aria-label="Nazi occupation and resistance writing">
             <div class="section-number">07/10</div>
             <div class="fh-ui-container">
