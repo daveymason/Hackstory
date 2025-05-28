@@ -45,3 +45,4 @@ This minimalist snap-scroll digital experience guides you through 10 pivotal mom
 ## Created for Hackstory
 
 This project was created for the Hackstory hackathon to honor overlooked heroes and make history accessible through digital storytelling.
+By Davey Mason, a Computer Science student in Georgia Tech
