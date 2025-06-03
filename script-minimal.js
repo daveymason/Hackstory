@@ -4,13 +4,11 @@
 class AccessibleTimeline {
     constructor() {
         this.currentLanguage = 'en';
-        this.currentTheme = localStorage.getItem('theme') || 'dark';
         this.init();
     }
 
     init() {
         this.setupLanguageSwitching();
-        this.setupThemeSwitching();
         this.setupKeyboardNavigation();
         this.setupReducedMotion();
         this.setupScrollSpy();
@@ -64,44 +62,6 @@ class AccessibleTimeline {
         
         // Announce change to screen readers
         this.announceToScreenReader(`Language changed to ${this.getLanguageName(lang)}`);
-    }
-
-    // Theme switching with WCAG AA compliance
-    setupThemeSwitching() {
-        const themeButton = document.getElementById('theme-toggle');
-        if (!themeButton) return;
-
-        themeButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            this.toggleTheme();
-        });
-
-        // Keyboard support
-        themeButton.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.toggleTheme();
-            }
-        });
-    }
-
-    toggleTheme() {
-        this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-        document.body.dataset.theme = this.currentTheme;
-        
-        // Update button text and ARIA label
-        const themeButton = document.getElementById('theme-toggle');
-        if (themeButton) {
-            themeButton.textContent = this.currentTheme === 'dark' ? '☀️' : '🌙';
-            themeButton.setAttribute('aria-label', 
-                `Switch to ${this.currentTheme === 'dark' ? 'light' : 'dark'} mode`);
-        }
-
-        // Store preference
-        localStorage.setItem('theme', this.currentTheme);
-        
-        // Announce change to screen readers
-        this.announceToScreenReader(`Switched to ${this.currentTheme} theme`);
     }
 
     // Enhanced keyboard navigation for accessibility
@@ -258,15 +218,6 @@ class AccessibleTimeline {
                 langButton.classList.add('active');
                 langButton.setAttribute('aria-pressed', 'true');
             }
-        }
-
-        // Apply stored theme
-        document.body.dataset.theme = this.currentTheme;
-        const themeButton = document.getElementById('theme-toggle');
-        if (themeButton) {
-            themeButton.textContent = this.currentTheme === 'dark' ? '☀️' : '🌙';
-            themeButton.setAttribute('aria-label', 
-                `Switch to ${this.currentTheme === 'dark' ? 'light' : 'dark'} mode`);
         }
     }
 

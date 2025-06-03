@@ -50,24 +50,6 @@ body {
     color: #000;
 }
 
-/* Theme toggle button */
-#theme-toggle {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--suriname-gold);
-    color: var(--suriname-gold);
-    padding: 8px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-    font-size: 16px;
-}
-
-#theme-toggle:hover {
-    background: var(--suriname-gold);
-    color: #000;
-}
-
 /* Skip navigation for accessibility */
 .skip-nav {
     position: absolute;
@@ -484,8 +466,7 @@ body {
 /* Focus styles for keyboard navigation */
 .lang-btn:focus,
 .dot:focus,
-.skip-nav:focus,
-#theme-toggle:focus {
+.skip-nav:focus {
     outline: 3px solid var(--suriname-gold);
     outline-offset: 2px;
 }
