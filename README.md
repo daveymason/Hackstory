@@ -1,6 +1,6 @@
 # Anton de Kom: A Hackstory
 
-🏆 **Hackstory Hackathon Project** - An interactive digital timeline experience
+🏆 **Hackstory Hackathon Project** - An snap-scrolling digital timeline experience
 
 ## About the Hero
 
@@ -32,9 +32,9 @@ This minimalist snap-scroll digital experience guides you through 10 pivotal mom
 ## Tech Stack
 
 - Pure HTML5/CSS3/JavaScript
-- Custom UI framework
 - Snap scroll CSS implementation
 - Mobile-first responsive design
+- WCAG AA Compliant 
 
 ## Quick Start
 
@@ -45,4 +45,8 @@ This minimalist snap-scroll digital experience guides you through 10 pivotal mom
 ## Created for Hackstory
 
 This project was created for the Hackstory hackathon to honor overlooked heroes and make history accessible through digital storytelling.
-By Davey Mason, a Computer Science student in Georgia Tech
+By Davey Mason, a Computer Science student in Georgia Tech, born in Ireland, living in The Hague within a community blessed with many Surinamese. 
+
+
+## Gif 
+Gif created with https://ez-animate.com

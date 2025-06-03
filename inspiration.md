@@ -24,6 +24,7 @@ I spent weeks simply listening. I attended community gatherings, visited local c
 - Started with user research and community engagement
 - Developed the core functionality with accessibility in mind
 - Used Fathead-ui which is trying to help with accessibility out fo the box 
+- Found it difficult and updated to ensure WCAG compliance
 
 ## Challenges I Faced
 

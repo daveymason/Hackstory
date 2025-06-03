@@ -1,981 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>    <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anton de Kom: A Life of Resistance</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="fathead-ui.css">    <style>
-        /* Surinamese color theme */
-        :root {
-            --suriname-red: #ce1126;
-            --suriname-white: #ffffff;
-            --suriname-blue: #003082;
-            --suriname-green: #00a86b;
-            --suriname-gold: #ffd700;
-            --suriname-dark-green: #006b3c;        }        /* Surinamese themed main title */
-        .fh-ui-main-title {
-            background: linear-gradient(135deg, 
-                var(--suriname-green) 0%, 
-                var(--suriname-white) 25%, 
-                var(--suriname-red) 50%, 
-                var(--suriname-white) 75%, 
-                var(--suriname-green) 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            background-clip: text !important;
-            color: transparent !important;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5) !important;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)) !important;
-        }
-        
-        /* Fallback for browsers that don't support background-clip: text */
-        @supports not (-webkit-background-clip: text) {
-            .fh-ui-main-title {
-                background: var(--suriname-green) !important;
-                color: var(--suriname-white) !important;
-                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
-            }
-        }
-
-        /* Additional styles for the story */
-        .story-snap-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-        }
-          .story-section {
-            height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: var(--fh-lg);
-            position: relative;
-            box-sizing: border-box;
-        }
-          .hero-section {
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(206, 17, 38, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 168, 107, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(0, 48, 130, 0.2) 0%, transparent 50%),
-                linear-gradient(135deg, 
-                    rgba(206, 17, 38, 0.1) 0%, 
-                    rgba(255, 215, 0, 0.05) 25%,
-                    rgba(0, 168, 107, 0.08) 50%,
-                    rgba(0, 48, 130, 0.12) 75%,
-                    rgba(206, 17, 38, 0.05) 100%);
-            border-bottom: 3px solid var(--suriname-gold);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.03) 50%, transparent 70%),
-                repeating-linear-gradient(
-                    90deg,
-                    transparent,
-                    transparent 50px,
-                    rgba(206, 17, 38, 0.02) 50px,
-                    rgba(206, 17, 38, 0.02) 52px
-                );
-            pointer-events: none;
-        }
-        
-        .hero-section .fh-ui-container {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .timeline-section {
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(206, 17, 38, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 168, 107, 0.06) 0%, transparent 40%),
-                var(--fh-glass-bg);
-            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(var(--fh-glass-blur));
-            position: relative;
-        }
-        
-        .timeline-section::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(135deg, 
-                    transparent 20%, 
-                    rgba(0, 48, 130, 0.02) 50%, 
-                    transparent 80%);
-            pointer-events: none;
-        }        .timeline-content {
-            max-width: 700px;
-            font-size: var(--fh-md);
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.95);
-            margin: 0 auto;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        
-        .timeline-content p {
-            margin: 0;
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-        }
-        
-        /* Card flip functionality */        .timeline-card {
-            perspective: 1200px;
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .timeline-card:hover {
-            transform: scale(1.03);
-        }
-        
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: auto;
-            min-height: 220px;
-            text-align: center;
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            transform-style: preserve-3d;
-        }
-        
-        .timeline-card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }        .card-front, .card-back {
-            position: relative;
-            width: 100%;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .card-front:hover, .card-back:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 215, 0, 0.6);
-        }
-        
-        .card-back {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotateY(180deg);
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.2) 0%, 
-                rgba(255, 215, 0, 0.1) 50%, 
-                rgba(255, 255, 255, 0.15) 100%);
-        }
-          .card-header {
-            color: white;
-            padding: var(--fh-md);
-            border-radius: 18px 18px 0 0;
-            margin: -2px -2px 0 -2px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: var(--fh-xs);
-        }
-        
-        /* Suriname flag colors: Green, White, Red, Gold star */
-        .card-header.suriname {
-            background: linear-gradient(135deg, 
-                rgba(0, 168, 107, 0.95) 0%, 
-                rgba(255, 255, 255, 0.3) 25%, 
-                rgba(206, 17, 38, 0.95) 50%, 
-                rgba(255, 255, 255, 0.3) 75%, 
-                rgba(0, 168, 107, 0.95) 100%);
-            box-shadow: 0 4px 15px rgba(0, 168, 107, 0.3);
-        }
-        
-        /* Netherlands flag colors: Red, White, Blue */
-        .card-header.netherlands {
-            background: linear-gradient(135deg, 
-                rgba(174, 28, 40, 0.95) 0%, 
-                rgba(255, 255, 255, 0.4) 35%, 
-                rgba(33, 70, 139, 0.95) 100%);
-            box-shadow: 0 4px 15px rgba(33, 70, 139, 0.3);
-        }
-        
-        /* Germany flag colors: Black, Red, Gold */
-        .card-header.germany {
-            background: linear-gradient(135deg, 
-                rgba(0, 0, 0, 0.9) 0%, 
-                rgba(221, 0, 0, 0.95) 50%, 
-                rgba(255, 206, 0, 0.95) 100%);
-            box-shadow: 0 4px 15px rgba(221, 0, 0, 0.4);
-        }
-        
-        .card-year {
-            font-size: var(--fh-md);
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .card-location {
-            display: flex;
-            align-items: center;
-            gap: var(--fh-xs);
-            font-size: var(--fh-sm);
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 4px 12px;
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
-        }
-        
-        .location-flag {
-            font-size: 1.2em;
-        }
-        
-        .card-body {
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-          /* References section styles */
-        .references-section {
-            background: linear-gradient(135deg, 
-                rgba(0, 168, 107, 0.15) 0%,
-                rgba(0, 48, 130, 0.25) 50%,
-                rgba(206, 17, 38, 0.15) 100%);
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-            padding: 40px 0 60px 0;
-        }
-
-        .references-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .reference-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .reference-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .reference-author {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: var(--suriname-gold);
-            margin-bottom: 8px;
-        }
-
-        .reference-title {
-            font-style: italic;
-            font-size: 1.05em;
-            margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.95);
-        }        .reference-details {
-            font-size: 0.95em;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 0;
-        }
-
-        /* Reference links styling for better readability */
-        .reference-details a {
-            color: var(--suriname-gold);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.4);
-            transition: all 0.3s ease;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-
-        .reference-details a:hover {
-            color: var(--suriname-white);
-            border-bottom-color: var(--suriname-white);
-            background: rgba(255, 215, 0, 0.1);
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-        }
-
-        .reference-details a:focus {
-            outline: 2px solid var(--suriname-gold);
-            outline-offset: 2px;
-            border-radius: 3px;
-        }.project-attribution {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .project-attribution p {
-            margin: 0;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .project-attribution p:last-child {
-            margin-bottom: 0;
-        }
-
-        .project-attribution strong {
-            color: var(--suriname-gold);
-            font-weight: 600;
-        }
-
-        /* Project attribution links styling */
-        .project-attribution a {
-            color: var(--suriname-white);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-            transition: all 0.3s ease;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-
-        .project-attribution a:hover {
-            color: var(--suriname-gold);
-            border-bottom-color: var(--suriname-gold);
-            background: rgba(255, 215, 0, 0.1);
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-        }
-
-        .project-attribution a:focus {
-            outline: 2px solid var(--suriname-gold);
-            outline-offset: 2px;
-            border-radius: 3px;
-        }
-
-        /* Ensure consistent card animations for all timeline cards */
-        .timeline-card {
-            perspective: 1200px !important;
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .timeline-card:hover {
-            transform: scale(1.03);
-        }
-
-        .card-inner {
-            position: relative !important;
-            width: 100% !important;
-            height: auto !important;
-            min-height: 280px !important;
-            text-align: center;
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
-            transform-style: preserve-3d !important;
-        }
-
-        .timeline-card.flipped .card-inner {
-            transform: rotateY(180deg) !important;
-        }
-
-        .card-front, .card-back {
-            position: relative !important;
-            width: 100% !important;
-            backface-visibility: hidden !important;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            min-height: 280px;
-            display: flex !important;
-            flex-direction: column !important;
-        }
-
-        .card-back {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            transform: rotateY(180deg) !important;
-            align-items: center !important;
-            justify-content: center !important;
-            background: linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.2) 0%, 
-                rgba(255, 215, 0, 0.1) 50%, 
-                rgba(255, 255, 255, 0.15) 100%);
-        }
-
-        /* Button styles for cards */
-          .scroll-indicator {
-            position: absolute;
-            bottom: var(--fh-lg);
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--fh-text-tertiary);
-            font-size: var(--fh-xs);
-            animation: bounce 2s infinite;
-            z-index: 10;
-            background: rgba(0, 0, 0, 0.5);
-            padding: var(--fh-xs) var(--fh-sm);
-            border-radius: 20px;
-            backdrop-filter: blur(8px);
-        }
-        
-        .scroll-indicator i {
-            display: block;
-            font-size: var(--fh-md);
-            margin-top: var(--fh-xs);
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
-            40% { transform: translateX(-50%) translateY(-10px); }
-            60% { transform: translateX(-50%) translateY(-5px); }
-        }
-          .section-number {
-            position: absolute;
-            top: var(--fh-md);
-            right: var(--fh-md);
-            font-size: var(--fh-xs);
-            color: var(--fh-text-tertiary);
-            font-weight: 300;
-        }
-        
-        /* Ensure content fits within viewport */
-        .fh-ui-container {
-            max-height: calc(100vh - 4rem);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        
-        .fh-ui-section-title {
-            font-size: var(--fh-lg);
-            margin-bottom: var(--fh-sm);
-        }
-          .fh-ui-main-title {
-            font-size: var(--fh-xl);
-            margin-bottom: var(--fh-sm);
-            color: var(--suriname-red);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-weight: 700;
-        }
-        
-        .fh-ui-subtitle {
-            font-size: var(--fh-lg);
-            margin-bottom: var(--fh-lg);
-            color: var(--suriname-blue);
-            font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-          .hero-section .timeline-content {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            border-radius: 12px;
-            padding: var(--fh-lg);
-            margin-top: var(--fh-md);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .hero-section .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
-        }
-        
-        .hero-section .timeline-content p {
-            color: var(--fh-text-primary);
-            font-weight: 400;
-            font-size: var(--fh-md);
-        }
-        
-        /* Accessibility improvements */
-        @media (prefers-reduced-motion: reduce) {
-            .story-snap-container {
-                scroll-behavior: auto;
-            }
-            
-            .scroll-indicator {
-                animation: none;
-            }
-        }
-          /* Skip navigation for accessibility */
-        .skip-nav {
-            position: absolute;
-            top: -40px;
-            left: 6px;
-            background: var(--suriname-red);
-            color: var(--suriname-white);
-            padding: 8px;
-            text-decoration: none;
-            border-radius: 4px;
-            z-index: 1000;
-        }
-        
-        .skip-nav:focus {
-            top: 6px;
-        }
-          /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .timeline-section {
-                background: rgba(0, 0, 0, 0.9);
-                border: 2px solid white;
-            }
-            
-            .timeline-content {
-                color: white;
-            }
-        }
-          /* Surinamese themed sections */
-        .story-section:nth-child(even) .timeline-section {
-            border-bottom: 1px solid rgba(206, 17, 38, 0.2);
-        }
-        
-        .story-section:nth-child(odd) .timeline-section {
-            border-bottom: 1px solid rgba(0, 168, 107, 0.2);
-        }/* Responsive adjustments */
-        @media (max-width: 768px) {
-            .story-section {
-                padding: var(--fh-md);
-            }
-            
-            .timeline-content {
-                font-size: var(--fh-sm);
-                max-width: 100%;
-                padding: 0 var(--fh-sm);
-            }
-            
-            .section-number {
-                top: var(--fh-sm);
-                right: var(--fh-sm);
-                font-size: var(--fh-xs);
-            }
-            
-            .fh-ui-main-title {
-                font-size: var(--fh-lg);
-            }
-            
-            .fh-ui-subtitle {
-                font-size: var(--fh-md);
-            }
-              .fh-ui-section-title {
-                font-size: var(--fh-md);
-            }
-            
-            .card-image {
-                width: 120px;
-                height: 120px;
-                font-size: 2.5rem;
-            }
-            
-            .card-caption {
-                font-size: var(--fh-xs);
-            }
-        }
-          /* Very small screens */
-        @media (max-width: 480px) {
-            .story-section {
-                padding: var(--fh-sm);
-            }
-            
-            .timeline-content {
-                font-size: var(--fh-xs);
-                line-height: 1.4;
-            }
-            
-            .fh-ui-container {
-                max-height: calc(100vh - 2rem);
-            }
-            
-            .card-image {
-                width: 100px;
-                height: 100px;
-                font-size: 2rem;
-            }
-            
-            .card-front, .card-back {
-                padding: var(--fh-md);
-                min-height: 150px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles-minimal.css">
 </head>
-<body class="fh-ui">
-    <!-- Background elements -->
-    <div class="fh-ui-bg"></div>
-    <div class="fh-ui-grid"></div>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="en">🌍 EN</button>
+        <button class="lang-btn" data-lang="nl">🇳🇱 NL</button>
+        <button class="lang-btn" data-lang="sr">🇸🇷 SR</button>
+        <button id="theme-toggle" aria-label="Switch to light mode">🌙</button>
+    </div>
     
     <!-- Skip navigation for accessibility -->
     <a href="#main-content" class="skip-nav">Skip to main content</a>
     
     <!-- Main story container -->
-    <main id="main-content" class="story-snap-container" role="main">
-          <!-- Hero Section -->
-        <section class="story-section hero-section" aria-label="Introduction to Anton de Kom">
-            <div class="fh-ui-container">
-                <h1 class="fh-ui-main-title">Anton de Kom</h1>
-                <p class="fh-ui-subtitle">A Life of Resistance</p>
-                <div class="timeline-content">
-                    <p>He was a Surinamese author, an anti-colonial activist, and a Dutch resistance hero. From the shores of his homeland to the streets of The Hague, Anton de Kom waged a lifelong war against injustice with his most powerful weapon: the truth. His story, once silenced, now defines the conscience of a nation.</p>
-                </div>
-            </div>
-            <div class="scroll-indicator" aria-label="Scroll to continue">
-                Scroll to uncover his story
-                <i>↓</i>
+    <main id="main-content" class="story-container">
+        <!-- Hero Section -->
+        <section id="hero" class="story-section hero-section">
+            <div class="container">
+                <h1 data-en="Anton de Kom" data-nl="Anton de Kom" data-sr="Anton de Kom">Anton de Kom</h1>
+                <p class="subtitle" data-en="A Life of Resistance" data-nl="Een Leven van Verzet" data-sr="Wan Libi foe Ferteri">A Life of Resistance</p>
+                <p class="intro" data-en="He was a Surinamese author, an anti-colonial activist, and a Dutch resistance hero. From the shores of his homeland to the streets of The Hague, Anton de Kom waged a lifelong war against injustice with his most powerful weapon: the truth. His story, once silenced, now defines the conscience of a nation." 
+                   data-nl="Hij was een Surinaamse auteur, een antikoloniale activist en een Nederlandse verzetsheld. Van de kusten van zijn vaderland tot de straten van Den Haag voerde Anton de Kom een levenslange oorlog tegen onrecht met zijn machtigste wapen: de waarheid. Zijn verhaal, ooit tot zwijgen gebracht, bepaalt nu het geweten van een natie."
+                   data-sr="A ben wan Surinaamse skrifi-man, wan anti-koloniale aktivist, nanga wan Nederlandse ferteri-hero. Foe na watrakant foe en kondre te na straat foe Den Haag, Anton de Kom ben fieti wan heellebi-ferteri tegen no-reti nanga en machtigste wapen: na warhede. En tori, wan tem dem ben meki kweti, now e bepaal na geweten foe wan nasyon.">He was a Surinamese author, an anti-colonial activist, and a Dutch resistance hero. From the shores of his homeland to the streets of The Hague, Anton de Kom waged a lifelong war against injustice with his most powerful weapon: the truth. His story, once silenced, now defines the conscience of a nation.</p>
             </div>
         </section>
 
         <!-- Timeline Section 1: Roots in Suriname -->
-        <section class="story-section timeline-section" aria-label="Anton de Kom's early life in Suriname">
-            <div class="section-number">01/10</div>            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">Roots in Suriname</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header suriname">
-                                <div class="card-year">1898</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇸🇷</span>
-                                    <span>Paramaribo, Suriname</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>Born into a society still bearing the deep scars of slavery, Anton de Kom grew up hearing the oral histories of his enslaved ancestors. This foundation ignited a lifelong quest for the dignity and recognition of his people.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">👶</div>
-                            <div class="card-caption">Young Anton de Kom in Paramaribo, surrounded by the stories of his ancestors</div>
-                        </div>
+        <section id="section1" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">01/10</div>
+                <h2 data-en="Roots in Suriname" data-nl="Wortels in Suriname" data-sr="Wortoe na Suriname">Roots in Suriname</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1898</div>
+                        <div class="card-location">🇸🇷 Paramaribo, Suriname</div>
                     </div>
+                    <h3 data-en="The Foundation of Resistance" data-nl="De Basis van Verzet" data-sr="Na Begi foe Ferteri">The Foundation of Resistance</h3>
+                    <p data-en="Born into a society still bearing the deep scars of slavery, Anton de Kom grew up hearing the oral histories of his enslaved ancestors. This foundation ignited a lifelong quest for the dignity and recognition of his people." 
+                       data-nl="Geboren in een samenleving die nog steeds de diepe littekens van de slavernij droeg, groeide Anton de Kom op met de mondelinge verhalen van zijn tot slaaf gemaakte voorouders. Deze basis ontketende een levenslange zoektocht naar waardigheid en erkenning voor zijn volk."
+                       data-sr="Bori na wan sma-kondre di e kari na deepe marka foe slavenni, Anton de Kom ben gro-op nanga eri na tori foe en enslaved gran-mama nanga gran-tata dem. Disi begi ben wakti wan heellebi zoektocht foe digniteit nanga kenki foe en pipel.">Born into a society still bearing the deep scars of slavery, Anton de Kom grew up hearing the oral histories of his enslaved ancestors. This foundation ignited a lifelong quest for the dignity and recognition of his people.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section>        <!-- Timeline Section 2: A New Chapter in Holland -->
-        <section class="story-section timeline-section" aria-label="Anton de Kom moves to the Netherlands">
-            <div class="section-number">02/10</div>            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">A New Chapter in Holland</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header netherlands">
-                                <div class="card-year">1921</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇳🇱</span>
-                                    <span>The Hague, Netherlands</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>At age 23, De Kom moves to the Netherlands, where he works as an accountant, falls in love with Petronella Borsboom, and starts a family. Here, he confronts the subtle racism of European society and becomes involved with anti-colonial movements, including support for Indonesian independence.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">🏢</div>
-                            <div class="card-caption">Anton working as an accountant in The Hague, beginning his new life in Europe</div>
-                        </div>
+        </section>
+
+        <!-- Timeline Section 2: A New Chapter in Holland -->
+        <section id="section2" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">02/10</div>
+                <h2 data-en="A New Chapter in Holland" data-nl="Een Nieuw Hoofdstuk in Holland" data-sr="Wan Nyu Fasi na Holland">A New Chapter in Holland</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1921</div>
+                        <div class="card-location">🇳🇱 The Hague, Netherlands</div>
                     </div>
+                    <h3 data-en="Love, Work, and Awakening" data-nl="Liefde, Werk, en Ontwaking" data-sr="Lobi, Wrok, en Awaki">Love, Work, and Awakening</h3>
+                    <p data-en="At age 23, De Kom moves to the Netherlands, where he works as an accountant, falls in love with Petronella Borsboom, and starts a family. Here, he confronts the subtle racism of European society and becomes involved with anti-colonial movements." 
+                       data-nl="Op 23-jarige leeftijd verhuist De Kom naar Nederland, waar hij als accountant werkt, verliefd wordt op Petronella Borsboom en een gezin sticht. Hier wordt hij geconfronteerd met de subtiele racisme van de Europese samenleving en raakt hij betrokken bij antikoloniale bewegingen."
+                       data-sr="Na 23 yari, De Kom muvi go Holland, weri e wroko alsu wan akontestant, lobi fasi nanga Petronella Borsboom, en fasi wan famiri. Na heri, e konfronti na di subtili rasisma fu yuropese sosyeteiti en e koni nanga anti-koloniale movimenti.">At age 23, De Kom moves to the Netherlands, where he works as an accountant, falls in love with Petronella Borsboom, and starts a family. Here, he confronts the subtle racism of European society and becomes involved with anti-colonial movements.</p>
                 </div>
-            </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
             </div>
         </section>
 
         <!-- Timeline Section 3: Return of a Son -->
-        <section class="story-section timeline-section" aria-label="Anton de Kom returns to Suriname">
-            <div class="section-number">03/10</div>            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">Return of a Son</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header suriname">
-                                <div class="card-year">1932</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇸🇷</span>
-                                    <span>Paramaribo, Suriname</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>After eleven years in the Netherlands, De Kom returns to Suriname with his Dutch wife and children. The people welcome him as a hero, but colonial authorities immediately view him as a dangerous agitator and place him under constant surveillance.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">🚢</div>
-                            <div class="card-caption">De Kom's triumphant return to Suriname with his family, welcomed as a hero</div>
-                        </div>
+        <section id="section3" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">03/10</div>
+                <h2 data-en="Return of a Son" data-nl="Terugkeer van een Zoon" data-sr="Terugkoms fu wan Soni">Return of a Son</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1932</div>
+                        <div class="card-location">🇸🇷 Paramaribo, Suriname</div>
                     </div>
+                    <h3 data-en="The Hero's Return" data-nl="De Terugkeer van de Held" data-sr="Di Hero a Kome Back">The Hero's Return</h3>
+                    <p data-en="After eleven years in the Netherlands, De Kom returns to Suriname with his Dutch wife and children. The people welcome him as a hero, but colonial authorities immediately view him as a dangerous agitator and place him under constant surveillance." 
+                       data-nl="Na elf jaar in Nederland keert De Kom terug naar Suriname met zijn Nederlandse vrouw en kinderen. Het volk verwelkomt hem als een held, maar de koloniale autoriteiten beschouwen hem onmiddellijk als een gevaarlijke agitator en plaatsen hem onder constante surveillance."
+                       data-sr="Afta 11 yari na Holland, De Kom kere na Suriname nanga en Dutch wroko-fasi en pikin. Di pipol e welkomi en alsu wan hero, bot di kolonial autoritei e si en immediateli alsu wan dangi agitator en e poti en onder konstanti surveilans.">After eleven years in the Netherlands, De Kom returns to Suriname with his Dutch wife and children. The people welcome him as a hero, but colonial authorities immediately view him as a dangerous agitator and place him under constant surveillance.</p>
                 </div>
-            </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section>        <!-- Timeline Section 4: The People's Counselor & Arrest -->
-        <section class="story-section timeline-section" aria-label="Anton de Kom's arrest and Black Tuesday">
-            <div class="section-number">04/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">The People's Counselor & Arrest</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-header suriname">
-                                <div class="card-year">1933</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇸🇷</span>
-                                    <span>Paramaribo, Suriname</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>He opens a consulting office to help Surinamese workers, who flock to him by the thousands. Fearing his influence, colonial authorities arrest him without charge. The mass protest demanding his release is met with gunfire, an event known as "Black Tuesday."</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">⚖️</div>
-                            <div class="card-caption">De Kom counseling workers in his office before his arrest on "Black Tuesday"</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
             </div>
         </section>
 
-        <!-- Timeline Section 5: Exile in The Hague -->
-        <section class="story-section timeline-section" aria-label="Anton de Kom's exile period">
-            <div class="section-number">05/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">Exile in The Hague</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-header netherlands">
-                                <div class="card-year">1933 - 1940</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇳🇱</span>
-                                    <span>The Hague, Netherlands</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>Banished from his homeland and sent back to the Netherlands, De Kom is jobless and under surveillance. He and his family endure poverty while living in the working-class neighborhoods of The Hague, but he never stops writing.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">🏠</div>
-                            <div class="card-caption">De Kom in exile, writing in his modest home in The Hague despite surveillance</div>
-                        </div>
+        <!-- Timeline Section 4: Black Tuesday -->
+        <section id="section4" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">04/10</div>
+                <h2 data-en="The People's Counselor" data-nl="De Raadgever van het Volk" data-sr="Di Pipel foe di Sensi">The People's Counselor</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1933</div>
+                        <div class="card-location">🇸🇷 Paramaribo, Suriname</div>
                     </div>
+                    <h3 data-en="Black Tuesday" data-nl="Zwarte Dinsdag" data-sr="Black Tuesday">Black Tuesday</h3>
+                    <p data-en="He opens a consulting office to help Surinamese workers, who flock to him by the thousands. Fearing his influence, colonial authorities arrest him without charge. The mass protest demanding his release is met with gunfire, an event known as 'Black Tuesday'." 
+                       data-nl="Hij opent een adviesbureau om Surinaamse arbeiders te helpen, die in duizenden naar hem toe komen. Uit vrees voor zijn invloed arresteren de koloniale autoriteiten hem zonder aanklacht. De massale protesten die zijn vrijlating eisen, worden met vuurwapens beantwoord, een gebeurtenis die bekend staat als 'Zwarte Dinsdag'."
+                       data-sr="A opo wan advisory ofis foe yepi Surinamese wroko-man, san e kome na en nanga tousands. Firi foe en influens, di kolonial autoritei e arrest en sondro charge. Di big protest san e demand en fridom e meet nanga gun-shot, wan events san e kali 'Black Tuesday'.">He opens a consulting office to help Surinamese workers, who flock to him by the thousands. Fearing his influence, colonial authorities arrest him without charge. The mass protest demanding his release is met with gunfire, an event known as 'Black Tuesday'.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section>        <!-- Timeline Section 6: The Book That Sparked a Fire -->
-        <section class="story-section timeline-section" aria-label="Publication of We Slaves of Suriname">
-            <div class="section-number">06/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">The Book That Sparked a Fire</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <div class="card-header netherlands">
-                                <div class="card-year">1934</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇳🇱</span>
-                                    <span>Amsterdam, Netherlands</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>While in exile, he completes and publishes his masterwork, <em>Wij slaven van Suriname</em> (We Slaves of Suriname). This groundbreaking book is the first history of Suriname written from an Afro-Surinamese perspective, exposing the brutal realities of slavery and colonialism. It becomes an immediate sensation and establishes him as a major intellectual voice.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">📚</div>
-                            <div class="card-caption">The groundbreaking book "We Slaves of Suriname" - the first history from an Afro-Surinamese perspective</div>
-                        </div>
+        </section>
+
+        <!-- Timeline Section 5: The Book That Sparked a Fire -->
+        <section id="section5" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">05/10</div>
+                <h2 data-en="The Book That Sparked a Fire" data-nl="Het Boek Dat een Vuur Ontstak" data-sr="Di Buku San Kosi Wan Faya">The Book That Sparked a Fire</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1934</div>
+                        <div class="card-location">🇳🇱 Amsterdam, Netherlands</div>
                     </div>
+                    <h3 data-en="Revolutionary Literature" data-nl="Revolutionaire Literatuur" data-sr="Revolusjonari Litiatuuri">Revolutionary Literature</h3>
+                    <p data-en="While in exile, he completes and publishes his masterwork, 'We Slaves of Suriname'. This groundbreaking book is the first history of Suriname written from an Afro-Surinamese perspective, exposing the brutal realities of slavery and colonialism." 
+                       data-nl="Terwijl hij in ballingschap is, voltooit en publiceert hij zijn meesterwerk, 'Wij slaven van Suriname'. Dit baanbrekende boek is de eerste geschiedenis van Suriname geschreven vanuit een Afro-Surinaamse perspectief, die de brute realiteiten van slavernij en kolonialisme blootlegt."
+                       data-sr="Terwijl e na eksil de, e kompleti en publisi en masterwroko, 'Wi slaven van Suriname'. Disi baanbrekendi buku na di fosi historia fu Suriname san e skrifi fu wan Afro-Surinamese perspektivi, eksi di brutal realititei fu slavernij en kolonialism.">While in exile, he completes and publishes his masterwork, "We Slaves of Suriname". This groundbreaking book is the first history of Suriname written from an Afro-Surinamese perspective, exposing the brutal realities of slavery and colonialism.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section><!-- Timeline Section 7: The Pen Against Fascism -->
-        <section class="story-section timeline-section" aria-label="Nazi occupation and resistance writing">
-            <div class="section-number">07/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">The Pen Against Fascism</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header netherlands">
-                                <div class="card-year">1940</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇳🇱</span>
-                                    <span>The Hague, Netherlands</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>When the Nazis invade and occupy the Netherlands, De Kom immediately recognizes the face of his old enemy—oppression. He joins the communist-leaning journal <em>De Vonk</em> (The Spark), writing articles against the fascist occupation.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">✍️</div>
-                            <div class="card-caption">De Kom writing for "De Vonk" resistance journal during Nazi occupation</div>
-                        </div>
+        </section>
+
+        <!-- Timeline Section 6: Exile and Reflection -->
+        <section id="section6" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">06/10</div>
+                <h2 data-en="Exile and Reflection" data-nl="Ballingschap en Reflectie" data-sr="Eksil en Refleksi">Exile and Reflection</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1933 - 1940</div>
+                        <div class="card-location">🇳🇱 The Netherlands</div>
                     </div>
+                    <h3 data-en="Forced into Exile" data-nl="Gedwongen Ballingschap" data-sr="Forsi na Eksil">Forced into Exile</h3>
+                    <p data-en="Banned from returning to Suriname, De Kom is forced into permanent exile in the Netherlands. During these years, he writes his masterwork and becomes increasingly involved in anti-fascist activities as the threat of Nazism grows across Europe." 
+                       data-nl="Verboden om terug te keren naar Suriname, wordt De Kom gedwongen tot permanente ballingschap in Nederland. Tijdens deze jaren schrijft hij zijn meesterwerk en raakt hij steeds meer betrokken bij anti-fascistische activiteiten terwijl de dreiging van het nazisme in heel Europa groeit."
+                       data-sr="Ban foe go baka na Suriname, De Kom e forsi na permanent eksil na Nederland. Na disi yari dem, a skrifi en masterwroko en a e koni moro nanga anti-fascist aktivitei teri di threat fu Nazism e gro na heel Europa.">Banned from returning to Suriname, De Kom is forced into permanent exile in the Netherlands. During these years, he writes his masterwork and becomes increasingly involved in anti-fascist activities as the threat of Nazism grows across Europe.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section>        <!-- Timeline Section 8: A Fighter in the Shadows -->
-        <section class="story-section timeline-section" aria-label="Dutch Resistance activities">
-            <div class="section-number">08/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">A Fighter in the Shadows</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header netherlands">
-                                <div class="card-year">1942 - 1944</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇳🇱</span>
-                                    <span>The Hague, Netherlands</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>His resistance work becomes more direct and dangerous. He joins the Dutch Resistance, forging documents for Jews in hiding and writing for the underground press. His home becomes a hub of clandestine activity.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">🕶️</div>
-                            <div class="card-caption">De Kom forging documents and coordinating resistance activities from his home</div>
-                        </div>
+        </section>
+
+        <!-- Timeline Section 7: The Pen Against Fascism -->
+        <section id="section7" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">07/10</div>
+                <h2 data-en="The Pen Against Fascism" data-nl="De Pen Tegen het Fascisme" data-sr="Di Pen Tegen Fascisme">The Pen Against Fascism</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1940</div>
+                        <div class="card-location">🇳🇱 The Hague, Netherlands</div>
                     </div>
+                    <h3 data-en="Writer Against Oppression" data-nl="Schrijver Tegen Onderdrukking" data-sr="Skrifi-man Tegen Onderdrokki">Writer Against Oppression</h3>
+                    <p data-en="When the Nazis invade and occupy the Netherlands, De Kom immediately recognizes the face of his old enemy—oppression. He joins the communist-leaning journal 'De Vonk' (The Spark), writing articles against the fascist occupation." 
+                       data-nl="Wanneer de nazi's Nederland binnenvallen en bezetten, herkent De Kom onmiddellijk het gezicht van zijn oude vijand—onderdrukking. Hij sluit zich aan bij het communistisch georiënteerde tijdschrift 'De Vonk', waarin hij artikelen schrijft tegen de fascistische bezetting."
+                       data-sr="Wen di Nazi dem invade en occupy Holland, De Kom e recognize immediateli di face fu en owru enemie—onderdrokki. A join di communist-leaning journal 'De Vonk' (The Spark), skrifi artikeli gegen di fascist occupation.">When the Nazis invade and occupy the Netherlands, De Kom immediately recognizes the face of his old enemy—oppression. He joins the communist-leaning journal "De Vonk" (The Spark), writing articles against the fascist occupation.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section>        <!-- Timeline Section 9: The Last Silence -->
-        <section class="story-section timeline-section" aria-label="Arrest and concentration camps">
-            <div class="section-number">09/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">The Last Silence</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header germany">
-                                <div class="card-year">August 1944 - April 1945</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇩🇪</span>
-                                    <span>Germany</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>Betrayed and arrested by the Gestapo, De Kom is imprisoned at the Oranjehotel in Scheveningen before being deported. He passes through two concentration camps, Vught and eventually Neuengamme, where he is forced into hard labor.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">⛓️</div>
-                            <div class="card-caption">De Kom's final imprisonment in Nazi concentration camps</div>
-                        </div>
+        </section>
+
+        <!-- Timeline Section 8: A Fighter in the Shadows -->
+        <section id="section8" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">08/10</div>
+                <h2 data-en="A Fighter in the Shadows" data-nl="Een Strijder in de Schaduwen" data-sr="Wan Ferteri na di Skadu">A Fighter in the Shadows</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">1942 - 1944</div>
+                        <div class="card-location">🇳🇱 The Hague, Netherlands</div>
                     </div>
+                    <h3 data-en="Underground Resistance" data-nl="Ondergronds Verzet" data-sr="Underground Ferteri">Underground Resistance</h3>
+                    <p data-en="His resistance work becomes more direct and dangerous. He joins the Dutch Resistance, forging documents for Jews in hiding and writing for the underground press. His home becomes a hub of clandestine activity." 
+                       data-nl="Zijn verzetswerk wordt directer en gevaarlijker. Hij sluit zich aan bij het Nederlandse Verzet, vervalst documenten voor ondergedoken Joden en schrijft voor de ondergrondse pers. Zijn huis wordt een centrum van clandestiene activiteiten."
+                       data-sr="En ferteri wroko e koni moro direkti en dengi. A join di Dutch Resistance, meki falsi dokument foe Jews na ondo en skrifi foe di underground press. En oso e koni wan center fu clandestine aktivitei.">His resistance work becomes more direct and dangerous. He joins the Dutch Resistance, forging documents for Jews in hiding and writing for the underground press. His home becomes a hub of clandestine activity.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to next section">
-                <i>↓</i>
-            </div>
-        </section>        <!-- Timeline Section 10: Legacy and Vindication -->
-        <section class="story-section timeline-section" aria-label="Anton de Kom's death and posthumous recognition">
-            <div class="section-number">10/10</div>
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">Legacy and Vindication</h2>
-                <div class="timeline-card" onclick="flipCard(this)">
-                    <div class="card-inner">                        <div class="card-front">
-                            <div class="card-header netherlands">
-                                <div class="card-year">April 1945 & Beyond</div>
-                                <div class="card-location">
-                                    <span class="location-flag">🇳🇱</span>
-                                    <span>Germany & Netherlands</span>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline-content">
-                                    <p>Anton de Kom dies of tuberculosis in a satellite camp of Neuengamme just weeks before its liberation. Decades later, his work is rediscovered. He is posthumously awarded the Dutch Cross of Resistance, and in 2020, his book becomes a central text during the Dutch Prime Minister's apology for slavery. His story is now a mandatory part of Dutch history.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-back">
-                            <div class="card-image">🏆</div>
-                            <div class="card-caption">De Kom's posthumous recognition: awarded the Dutch Cross of Resistance, his legacy finally honored</div>
-                        </div>
+        </section>
+
+        <!-- Timeline Section 9: The Last Silence -->
+        <section id="section9" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">09/10</div>
+                <h2 data-en="The Last Silence" data-nl="De Laatste Stilte" data-sr="Di Laste Kweti">The Last Silence</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">August 1944 - April 1945</div>
+                        <div class="card-location">🇩🇪 Germany</div>
                     </div>
+                    <h3 data-en="Final Imprisonment" data-nl="Laatste Gevangenschap" data-sr="Laste Prisons">Final Imprisonment</h3>
+                    <p data-en="Betrayed and arrested by the Gestapo, De Kom is imprisoned at the Oranjehotel in Scheveningen before being deported. He passes through two concentration camps, Vught and eventually Neuengamme, where he is forced into hard labor." 
+                       data-nl="Verraden en gearresteerd door de Gestapo, wordt De Kom opgesloten in het Oranjehotel in Scheveningen voordat hij wordt gedeporteerd. Hij komt door twee concentratiekampen, Vught en uiteindelijk Neuengamme, waar hij tot dwangarbeid wordt gedwongen."
+                       data-sr="Verraten en arrest door di Gestapo, De Kom e prison na di Oranjehotel na Scheveningen fossi a e deport. A e pasa door tu concentration camp, Vught en na en einde Neuengamme, weri a e forsi na hard labor.">Betrayed and arrested by the Gestapo, De Kom is imprisoned at the Oranjehotel in Scheveningen before being deported. He passes through two concentration camps, Vught and eventually Neuengamme, where he is forced into hard labor.</p>
                 </div>
             </div>
-            <div class="scroll-indicator" aria-label="Scroll to references">
-                <i>↓</i>
+        </section>
+
+        <!-- Timeline Section 10: Legacy and Vindication -->
+        <section id="section10" class="story-section timeline-section">
+            <div class="container">
+                <div class="section-number">10/10</div>
+                <h2 data-en="Legacy and Vindication" data-nl="Erfenis en Eerherstel" data-sr="Legasi en Vindikasi">Legacy and Vindication</h2>
+                <div class="timeline-card">
+                    <div class="card-header">
+                        <div class="card-date">April 1945 & Beyond</div>
+                        <div class="card-location">🇩🇪🇳🇱 Germany & Netherlands</div>
+                    </div>
+                    <h3 data-en="Eternal Recognition" data-nl="Eeuwige Erkenning" data-sr="Eternal Kenki">Eternal Recognition</h3>
+                    <p data-en="Anton de Kom dies of tuberculosis in a satellite camp of Neuengamme just weeks before its liberation. Decades later, his work is rediscovered. He is posthumously awarded the Dutch Cross of Resistance, and in 2020, his book becomes a central text during the Dutch Prime Minister's apology for slavery."
+                       data-nl="Anton de Kom sterft aan tuberculose in een satellietkamp van Neuengamme, slechts weken voor de bevrijding. Decennia later wordt zijn werk herontdekt. Hij wordt postuum onderscheiden met het Nederlandse Verzetskruis, en in 2020 wordt zijn boek een centraal document tijdens de excuses van de Nederlandse premier voor de slavernij."
+                       data-sr="Anton de Kom e dede fu tuberculosis na wan satellite camp fu Neuengamme, just wan paar wiku fossi di liberation. Decades later, en wroko e rediscover. A e award posthumously nanga di Dutch Cross of Resistance, en na 2020, en buku e koni wan central text during di Dutch Prime Minister apology foe slavery.">Anton de Kom dies of tuberculosis in a satellite camp of Neuengamme just weeks before its liberation. Decades later, his work is rediscovered. He is posthumously awarded the Dutch Cross of Resistance, and in 2020, his book becomes a central text during the Dutch Prime Minister's apology for slavery.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hero GIF Section -->
+        <section id="hero-gif" class="story-section hero-gif-section">
+            <div class="hero-gif-container">
+                <img src="assets/hero.gif" alt="Animated portrait of Anton de Kom" class="hero-gif" />
             </div>
         </section>
 
         <!-- References Section -->
-        <section class="story-section references-section" aria-label="Academic references and sources">
-            <div class="fh-ui-container">
-                <h2 class="fh-ui-section-title">References</h2>                <div class="references-content">
-
-                    
+        <section id="references" class="story-section references-section">
+            <div class="container">
+                <h2 data-en="References" data-nl="Referenties" data-sr="Referensi">References</h2>
+                <div class="references-content">
                     <div class="reference-item">
                         <p class="reference-author">Wikipedia</p>
                         <p class="reference-title">"Anton de Kom"</p>
@@ -997,110 +244,29 @@
                 
                 <div class="project-attribution">
                     <p>Created for the <strong><a href="https://hackstory.devpost.com/">Hackstory Hackathon</a></strong> - Honoring overlooked heroes through digital storytelling</p>
-                    <p> By <a href="https://daveymason.com">Davey Mason</a> 🇮🇪</p>
+                    <p>Designed in The Hague 🇳🇱 by <a href="https://daveymason.com">Davey Mason</a> 🇮🇪</p>
                 </div>
             </div>
         </section>
+    </main>
 
-    </main>    <!-- Navigation dots for accessibility and navigation -->
-    <nav class="fh-ui-snap-dots" aria-label="Story sections navigation">
-        <button class="dot active" aria-label="Go to introduction" onclick="scrollToSection(0)"></button>
-        <button class="dot" aria-label="Go to section 1" onclick="scrollToSection(1)"></button>
-        <button class="dot" aria-label="Go to section 2" onclick="scrollToSection(2)"></button>
-        <button class="dot" aria-label="Go to section 3" onclick="scrollToSection(3)"></button>
-        <button class="dot" aria-label="Go to section 4" onclick="scrollToSection(4)"></button>
-        <button class="dot" aria-label="Go to section 5" onclick="scrollToSection(5)"></button>
-        <button class="dot" aria-label="Go to section 6" onclick="scrollToSection(6)"></button>
-        <button class="dot" aria-label="Go to section 7" onclick="scrollToSection(7)"></button>
-        <button class="dot" aria-label="Go to section 8" onclick="scrollToSection(8)"></button>
-        <button class="dot" aria-label="Go to section 9" onclick="scrollToSection(9)"></button>
-        <button class="dot" aria-label="Go to section 10" onclick="scrollToSection(10)"></button>
-        <button class="dot" aria-label="Go to references" onclick="scrollToSection(11)"></button>
-    </nav><script>
-        // Card flip functionality
-        function flipCard(card) {
-            card.classList.toggle('flipped');
-        }
-        
-        // Scroll navigation and accessibility
-        function scrollToSection(index) {
-            const sections = document.querySelectorAll('.story-section');
-            const dots = document.querySelectorAll('.dot');
-            
-            if (sections[index]) {
-                sections[index].scrollIntoView({ behavior: 'smooth' });
-                
-                // Update active dot
-                dots.forEach(dot => dot.classList.remove('active'));
-                dots[index].classList.add('active');
-            }
-        }
+    <!-- Navigation dots -->
+    <nav class="navigation-dots" aria-label="Timeline navigation">
+        <a href="#hero" class="dot active" aria-label="Go to Introduction"></a>
+        <a href="#section1" class="dot" aria-label="Go to Roots in Suriname"></a>
+        <a href="#section2" class="dot" aria-label="Go to A New Chapter in Holland"></a>
+        <a href="#section3" class="dot" aria-label="Go to Return of a Son"></a>
+        <a href="#section4" class="dot" aria-label="Go to The People's Counselor"></a>
+        <a href="#section5" class="dot" aria-label="Go to Exile and Reflection"></a>
+        <a href="#section6" class="dot" aria-label="Go to The Historian Emerges"></a>
+        <a href="#section7" class="dot" aria-label="Go to War Comes to Europe"></a>
+        <a href="#section8" class="dot" aria-label="Go to Captured by the Resistance"></a>
+        <a href="#section9" class="dot" aria-label="Go to The Final Stand"></a>
+        <a href="#section10" class="dot" aria-label="Go to Eternal Recognition"></a>
+        <a href="#hero-gif" class="dot" aria-label="Go to Portrait"></a>
+        <a href="#references" class="dot" aria-label="Go to References"></a>
+    </nav>
 
-        // Update active dot on scroll
-        let ticking = false;
-        
-        function updateActiveDot() {
-            const sections = document.querySelectorAll('.story-section');
-            const dots = document.querySelectorAll('.dot');
-            const scrollContainer = document.querySelector('.story-snap-container');
-            
-            let activeIndex = 0;
-            const scrollTop = scrollContainer.scrollTop;
-            const containerHeight = scrollContainer.clientHeight;
-            
-            sections.forEach((section, index) => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                
-                if (scrollTop >= sectionTop - containerHeight / 2 && 
-                    scrollTop < sectionTop + sectionHeight - containerHeight / 2) {
-                    activeIndex = index;
-                }
-            });
-            
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === activeIndex);
-            });
-            
-            ticking = false;
-        }
-        
-        document.querySelector('.story-snap-container').addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(updateActiveDot);
-                ticking = true;
-            }
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            const currentSection = document.querySelector('.dot.active');
-            const allDots = Array.from(document.querySelectorAll('.dot'));
-            const currentIndex = allDots.indexOf(currentSection);
-            
-            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-                e.preventDefault();
-                if (currentIndex < allDots.length - 1) {
-                    scrollToSection(currentIndex + 1);
-                }
-            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-                e.preventDefault();
-                if (currentIndex > 0) {
-                    scrollToSection(currentIndex - 1);
-                }
-            } else if (e.key === 'Home') {
-                e.preventDefault();
-                scrollToSection(0);
-            } else if (e.key === 'End') {
-                e.preventDefault();
-                scrollToSection(allDots.length - 1);
-            }
-        });
-
-        // Prefers-reduced-motion support
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            document.documentElement.style.scrollBehavior = 'auto';
-        }
-    </script>
+    <script src="script-minimal.js"></script>
 </body>
 </html>
