@@ -24,7 +24,6 @@ This minimalist snap-scroll digital experience guides you through 10 pivotal mom
 ## Features
 
 - **Snap-scroll navigation** through timeline sections
-- **Interactive flip cards** revealing deeper context and visuals
 - **Surinamese-inspired color palette** honoring his heritage
 - **Accessible design** with proper ARIA labels and keyboard navigation
 - **Responsive layout** for all devices
